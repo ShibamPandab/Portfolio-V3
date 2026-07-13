@@ -1,26 +1,198 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------ */
+/*  Design tokens                                                      */
+/* ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #f5f5f7;
+  --muted: #a1a1aa;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+html,
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Hero — pre-JS hidden states                                        */
+/*  While the intro is "pending" (server HTML / before GSAP runs) we   */
+/*  keep the animated layers invisible so the very first paint is a    */
+/*  pure black screen. GSAP then owns the inline styles.               */
+/* ------------------------------------------------------------------ */
+.hero[data-intro="pending"] [data-anim="flag-base"],
+.hero[data-intro="pending"] [data-anim="flag-reveal"],
+.hero[data-intro="pending"] [data-anim="char"],
+.hero[data-intro="pending"] [data-anim="glow"],
+.hero[data-intro="pending"] [data-anim="editorial"],
+.hero[data-intro="pending"] [data-anim="particles"],
+.hero[data-intro="pending"] [data-anim="line"],
+.hero[data-intro="pending"] [data-anim="cta"] {
+  opacity: 0;
+}
+
+.hero[data-intro="pending"] [data-anim="flag-reveal"] {
+  clip-path: inset(100% 0 0 0);
+}
+
+/* Hint the compositor only for the layers we actually transform. */
+[data-anim="flag-base"],
+[data-anim="flag-reveal"],
+[data-anim="char"],
+[data-anim="editorial"],
+[data-anim="line"],
+[data-anim="cta"],
+[data-parallax] {
+  will-change: transform, opacity, filter;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Hero — atmospheric background treatment                            */
+/* ------------------------------------------------------------------ */
+
+/* Flag texture: moderately desaturated, slightly brightened and softly
+   blurred so it stays recognisable yet atmospheric. Opacity is owned by
+   GSAP (two-layer fade + reveal), so it is deliberately not set here. */
+.hero-flag-texture {
+  filter: saturate(0.6) brightness(1.1) blur(2px);
+}
+
+/* Dark scrim over the flag (~45–50%) — kept light enough that the flag
+   remains identifiable, heavier at the edges for foreground contrast. */
+.hero-flag-scrim {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.48) 0%,
+    rgba(0, 0, 0, 0.3) 44%,
+    rgba(0, 0, 0, 0.48) 100%
+  );
+}
+
+/* Soft radial glow that lifts the character off the background. */
+.hero-glow {
+  background: radial-gradient(
+    58% 52% at 50% 40%,
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(255, 255, 255, 0.05) 34%,
+    rgba(0, 0, 0, 0) 70%
+  );
+}
+
+/* Vignette framing the whole hero. */
+.hero-vignette {
+  background: radial-gradient(
+    118% 118% at 50% 48%,
+    rgba(0, 0, 0, 0) 52%,
+    rgba(0, 0, 0, 0.45) 80%,
+    rgba(0, 0, 0, 0.82) 100%
+  );
+}
+
+/* Very subtle text shadow for foreground copy legibility. */
+.hero-text-shadow {
+  text-shadow:
+    0 1px 24px rgba(0, 0, 0, 0.35),
+    0 1px 3px rgba(0, 0, 0, 0.28);
+}
+
+/* Fine film grain from an inline SVG turbulence texture (no extra asset). */
+.hero-grain {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+  background-size: 160px 160px;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  animation: hero-grain-shift 0.6s steps(2) infinite;
+}
+
+@keyframes hero-grain-shift {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-2%, 1%, 0); }
+  100% { transform: translate3d(1%, -1%, 0); }
+}
+
+/* Ambient floating particle. Position/scale/timing come from :nth-child. */
+.hero-particle {
+  position: absolute;
+  left: var(--p-left);
+  top: var(--p-top);
+  width: var(--p-size);
+  height: var(--p-size);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  filter: blur(0.5px);
+  animation: hero-float var(--p-duration) ease-in-out var(--p-delay) infinite;
+}
+
+@keyframes hero-float {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.6);
+  }
+  20% {
+    opacity: var(--p-opacity);
+  }
+  80% {
+    opacity: var(--p-opacity);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--p-drift), -46px, 0) scale(1);
+  }
+}
+
+/* Per-particle placement + timing. Deterministic so SSR and CSR match. */
+.hero-particle:nth-child(1)  { --p-left: 8%;  --p-top: 72%; --p-size: 2px;   --p-duration: 13s; --p-delay: 0s;   --p-drift: 18px;  --p-opacity: 0.30; }
+.hero-particle:nth-child(2)  { --p-left: 15%; --p-top: 40%; --p-size: 1.5px; --p-duration: 16s; --p-delay: 2s;   --p-drift: -12px; --p-opacity: 0.22; }
+.hero-particle:nth-child(3)  { --p-left: 23%; --p-top: 85%; --p-size: 2.5px; --p-duration: 11s; --p-delay: 4s;   --p-drift: 24px;  --p-opacity: 0.38; }
+.hero-particle:nth-child(4)  { --p-left: 31%; --p-top: 22%; --p-size: 1px;   --p-duration: 18s; --p-delay: 1s;   --p-drift: -20px; --p-opacity: 0.18; }
+.hero-particle:nth-child(5)  { --p-left: 39%; --p-top: 60%; --p-size: 2px;   --p-duration: 14s; --p-delay: 5s;   --p-drift: 14px;  --p-opacity: 0.34; }
+.hero-particle:nth-child(6)  { --p-left: 47%; --p-top: 33%; --p-size: 1.5px; --p-duration: 12s; --p-delay: 3s;   --p-drift: -8px;  --p-opacity: 0.26; }
+.hero-particle:nth-child(7)  { --p-left: 54%; --p-top: 78%; --p-size: 2.5px; --p-duration: 15s; --p-delay: 6s;   --p-drift: 20px;  --p-opacity: 0.42; }
+.hero-particle:nth-child(8)  { --p-left: 61%; --p-top: 48%; --p-size: 1px;   --p-duration: 17s; --p-delay: 2.5s; --p-drift: -16px; --p-opacity: 0.20; }
+.hero-particle:nth-child(9)  { --p-left: 68%; --p-top: 18%; --p-size: 2px;   --p-duration: 13s; --p-delay: 4.5s; --p-drift: 12px;  --p-opacity: 0.30; }
+.hero-particle:nth-child(10) { --p-left: 74%; --p-top: 66%; --p-size: 1.5px; --p-duration: 16s; --p-delay: 1.5s; --p-drift: -22px; --p-opacity: 0.24; }
+.hero-particle:nth-child(11) { --p-left: 81%; --p-top: 38%; --p-size: 2.5px; --p-duration: 11s; --p-delay: 7s;   --p-drift: 16px;  --p-opacity: 0.38; }
+.hero-particle:nth-child(12) { --p-left: 87%; --p-top: 82%; --p-size: 1px;   --p-duration: 19s; --p-delay: 3.5s; --p-drift: -10px; --p-opacity: 0.18; }
+.hero-particle:nth-child(13) { --p-left: 92%; --p-top: 52%; --p-size: 2px;   --p-duration: 14s; --p-delay: 6.5s; --p-drift: 22px;  --p-opacity: 0.32; }
+.hero-particle:nth-child(14) { --p-left: 5%;  --p-top: 30%; --p-size: 1.5px; --p-duration: 15s; --p-delay: 5.5s; --p-drift: 10px;  --p-opacity: 0.22; }
+.hero-particle:nth-child(15) { --p-left: 44%; --p-top: 90%; --p-size: 2px;   --p-duration: 12s; --p-delay: 8s;   --p-drift: -14px; --p-opacity: 0.36; }
+.hero-particle:nth-child(16) { --p-left: 66%; --p-top: 92%; --p-size: 1.5px; --p-duration: 17s; --p-delay: 0.5s; --p-drift: 18px;  --p-opacity: 0.26; }
+
+/* ------------------------------------------------------------------ */
+/*  Accessibility — honour reduced motion                             */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-grain,
+  .hero-particle {
+    animation: none !important;
+  }
+
+  .hero-particle {
+    opacity: var(--p-opacity);
+  }
 }
