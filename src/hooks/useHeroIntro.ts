@@ -20,14 +20,8 @@ let hasIntroPlayed = false;
 
 function collectTargets(root: HTMLElement): HeroTimelineTargets {
   return {
-    character: root.querySelector('[data-anim="char"]'),
-    glow: root.querySelector('[data-anim="glow"]'),
-    flagBase: root.querySelector('[data-anim="flag-base"]'),
-    flagReveal: root.querySelector('[data-anim="flag-reveal"]'),
+    video: root.querySelector('[data-anim="video"]'),
     editorial: root.querySelector('[data-anim="editorial"]'),
-    particles: root.querySelector('[data-anim="particles"]'),
-    lines: Array.from(root.querySelectorAll('[data-anim="line"]')),
-    cta: root.querySelector('[data-anim="cta"]'),
   };
 }
 

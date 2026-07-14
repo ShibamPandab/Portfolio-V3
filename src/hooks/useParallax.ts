@@ -8,17 +8,15 @@ import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 const PARALLAX_DEPTH = {
   // Background flag drifts gently with the cursor.
   flag: { x: 14, y: 9 },
-  // Editorial name sits mid-depth — moves opposite the flag, less than the
-  // character.
+  // Editorial name sits mid-depth, moving opposite the flag.
   type: { x: -13, y: -8 },
-  // Foreground character moves the most, selling the sense of depth.
-  character: { x: -26, y: -14 },
 } as const;
 
 /**
- * Very subtle cursor parallax. Targets inner `[data-parallax]` layers so it
- * never fights the intro timeline (which drives the outer `[data-anim]`
- * wrappers). Disabled for touch devices and reduced-motion users.
+ * Very subtle cursor parallax on the background layers only — the character is
+ * intentionally excluded so it never moves. Targets inner `[data-parallax]`
+ * layers so it never fights the intro timeline (which drives the outer
+ * `[data-anim]` wrappers). Disabled for touch devices and reduced-motion users.
  */
 export function useParallax(rootRef: RefObject<HTMLElement | null>): void {
   useIsomorphicLayoutEffect(() => {
@@ -33,10 +31,7 @@ export function useParallax(rootRef: RefObject<HTMLElement | null>): void {
 
     const flag = root.querySelector<HTMLElement>('[data-parallax="flag"]');
     const type = root.querySelector<HTMLElement>('[data-parallax="type"]');
-    const character = root.querySelector<HTMLElement>(
-      '[data-parallax="char"]',
-    );
-    if (!flag && !type && !character) return;
+    if (!flag && !type) return;
 
     const ctx = gsap.context(() => {
       // quickTo gives us a cheap, smoothed setter per axis. Use `undefined`
@@ -54,12 +49,6 @@ export function useParallax(rootRef: RefObject<HTMLElement | null>): void {
         typeY: type
           ? gsap.quickTo(type, "y", { duration: 0.85, ease: "power3.out" })
           : undefined,
-        charX: character
-          ? gsap.quickTo(character, "x", { duration: 0.9, ease: "power3.out" })
-          : undefined,
-        charY: character
-          ? gsap.quickTo(character, "y", { duration: 0.9, ease: "power3.out" })
-          : undefined,
       };
 
       const handleMove = (event: MouseEvent) => {
@@ -71,8 +60,6 @@ export function useParallax(rootRef: RefObject<HTMLElement | null>): void {
         tween.flagY?.(ny * PARALLAX_DEPTH.flag.y);
         tween.typeX?.(nx * PARALLAX_DEPTH.type.x);
         tween.typeY?.(ny * PARALLAX_DEPTH.type.y);
-        tween.charX?.(nx * PARALLAX_DEPTH.character.x);
-        tween.charY?.(ny * PARALLAX_DEPTH.character.y);
       };
 
       const handleLeave = () => {
@@ -80,8 +67,6 @@ export function useParallax(rootRef: RefObject<HTMLElement | null>): void {
         tween.flagY?.(0);
         tween.typeX?.(0);
         tween.typeY?.(0);
-        tween.charX?.(0);
-        tween.charY?.(0);
       };
 
       window.addEventListener("mousemove", handleMove);
