@@ -97,6 +97,67 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Infinite marquee                                                   */
+/* ------------------------------------------------------------------ */
+
+/* Height + edge fade mask: text dissolves in/out at both edges rather than
+   entering/leaving abruptly. */
+.marquee {
+  height: clamp(60px, 8vh, 70px);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}
+
+/* The track holds two identical copies; translating it -50% loops seamlessly
+   because the second copy lands exactly where the first began. */
+.marquee-track {
+  height: 100%;
+  align-items: center;
+  color: #d8d8d8;
+  font-size: clamp(0.72rem, 1.1vw, 0.82rem);
+  font-weight: 550;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  will-change: transform;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+/* Pause on hover for a considered, luxury feel. */
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Separator between items. */
+.marquee-sep {
+  margin: 0 1.75em 0 2.05em;
+  color: rgba(216, 216, 216, 0.4);
+  font-size: 0.7em;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Editorial section — portrait card                                  */
 /* ------------------------------------------------------------------ */
 
