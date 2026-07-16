@@ -2,6 +2,7 @@ import Hero from "@/components/hero/Hero";
 import CreativeSection from "@/components/sections/CreativeSection";
 import EditorialSection from "@/components/sections/EditorialSection";
 import Marquee from "@/components/sections/Marquee";
+import ProjectsSection from "@/components/sections/projects/ProjectsSection";
 
 export default function Home() {
   return (
@@ -12,9 +13,10 @@ export default function Home() {
       <EditorialSection />
       {/* 3 — Mirrored: portrait left, text right */}
       <CreativeSection />
-      {/* 4 — Infinite marquee (before the Projects section) */}
+      {/* 4 — Infinite marquee */}
       <Marquee />
-      {/* 5 — Projects section goes here */}
+      {/* 5 — Projects */}
+      <ProjectsSection />
     </main>
   );
 }
