@@ -14,7 +14,7 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-mono-code);
 }
 
 /* ------------------------------------------------------------------ */
@@ -24,6 +24,24 @@ html,
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Lenis smooth scrolling (see SmoothScroll.tsx). */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
@@ -94,6 +112,50 @@ body {
 .hero-editorial-outline {
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Motion Lab                                                         */
+/* ------------------------------------------------------------------ */
+
+/* Horizontal experiment track — hide the native scrollbar (progress bar
+   below stands in). */
+.lab-track {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.lab-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* 3D tilt face: easing lives here so the tilt (set via JS) glides back with no
+   bounce. preserve-3d lets the inner layers separate in depth. */
+.lab-card {
+  transform: perspective(900px) rotateY(0deg) rotateX(0deg);
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Process                                                            */
+/* ------------------------------------------------------------------ */
+
+/* Oversized outlined index numbers — transparent fill + faint stroke, so they
+   read as a ghosted editorial mark rather than solid type. */
+.process-index {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.22);
+}
+
+/* Pre-JS: steps hidden and index numbers clipped, so nothing flashes before
+   GSAP takes over. */
+.process-section [data-step] {
+  opacity: 0;
+}
+
+.process-section [data-clip] {
+  clip-path: inset(100% 0 0 0);
 }
 
 /* ------------------------------------------------------------------ */

@@ -2,6 +2,8 @@ import Hero from "@/components/hero/Hero";
 import CreativeSection from "@/components/sections/CreativeSection";
 import EditorialSection from "@/components/sections/EditorialSection";
 import Marquee from "@/components/sections/Marquee";
+import MotionLabSection from "@/components/sections/motionlab/MotionLabSection";
+import ProcessSection from "@/components/sections/process/ProcessSection";
 import ProjectsSection from "@/components/sections/projects/ProjectsSection";
 import TimelineSection from "@/components/sections/timeline/TimelineSection";
 
@@ -20,6 +22,10 @@ export default function Home() {
       <TimelineSection />
       {/* 6 — Projects */}
       <ProjectsSection />
+      {/* 7 — Process (working method) */}
+      <ProcessSection />
+      {/* 8 — Motion Lab (horizontal experiment gallery) */}
+      <MotionLabSection />
     </main>
   );
 }

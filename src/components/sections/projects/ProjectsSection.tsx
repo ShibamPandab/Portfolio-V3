@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import {
   AnimatePresence,
   motion,
@@ -61,6 +61,15 @@ export default function ProjectsSection() {
     setLast(index);
   };
 
+  // Clear the custom cursor when the page scrolls: if the pointer stays still
+  // while a row scrolls out from under it, Framer's onHoverEnd never fires, so
+  // the fixed cursor/thumbnail would otherwise linger over later sections.
+  useEffect(() => {
+    const clear = () => setActive(null);
+    window.addEventListener("scroll", clear, { passive: true });
+    return () => window.removeEventListener("scroll", clear);
+  }, []);
+
   const visible = fine && active !== null;
 
   return (
@@ -68,6 +77,7 @@ export default function ProjectsSection() {
       id="projects"
       aria-label="Selected projects"
       onMouseMove={handleMouseMove}
+      onMouseLeave={() => setActive(null)}
       className="relative w-full bg-background py-[clamp(5rem,12vh,9rem)]"
     >
       {/* Section header */}

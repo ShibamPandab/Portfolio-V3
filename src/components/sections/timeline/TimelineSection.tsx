@@ -26,7 +26,7 @@ export default function TimelineSection() {
 
   return (
     <section
-      id="process"
+      id="journey"
       aria-label="Journey"
       className="relative w-full bg-background px-6 py-[clamp(4rem,10vh,7rem)] sm:px-10 lg:px-16 xl:px-24"
     >
