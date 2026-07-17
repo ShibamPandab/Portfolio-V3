@@ -97,6 +97,20 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Story timeline                                                     */
+/* ------------------------------------------------------------------ */
+
+/* Pre-JS state: cards hidden and the progress line collapsed, so nothing
+   flashes before GSAP takes over. */
+.timeline-card {
+  opacity: 0;
+}
+
+.timeline-progress {
+  transform: scaleY(0);
+}
+
+/* ------------------------------------------------------------------ */
 /*  Infinite marquee                                                   */
 /* ------------------------------------------------------------------ */
 

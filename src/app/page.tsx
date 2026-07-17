@@ -3,6 +3,7 @@ import CreativeSection from "@/components/sections/CreativeSection";
 import EditorialSection from "@/components/sections/EditorialSection";
 import Marquee from "@/components/sections/Marquee";
 import ProjectsSection from "@/components/sections/projects/ProjectsSection";
+import TimelineSection from "@/components/sections/timeline/TimelineSection";
 
 export default function Home() {
   return (
@@ -15,7 +16,9 @@ export default function Home() {
       <CreativeSection />
       {/* 4 — Infinite marquee */}
       <Marquee />
-      {/* 5 — Projects */}
+      {/* 5 — Scroll-driven story timeline */}
+      <TimelineSection />
+      {/* 6 — Projects */}
       <ProjectsSection />
     </main>
   );
