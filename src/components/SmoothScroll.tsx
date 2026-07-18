@@ -7,6 +7,13 @@ import Lenis from "lenis";
 
 gsap.registerPlugin(ScrollTrigger);
 
+declare global {
+  interface Window {
+    /** The active Lenis instance, for programmatic smooth scrolls. */
+    __lenis?: Lenis;
+  }
+}
+
 /**
  * Site-wide Lenis smooth scrolling, driven off GSAP's ticker.
  *
@@ -35,11 +42,16 @@ export default function SmoothScroll() {
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
+    // Expose the instance so components (e.g. "Back to top") can request a
+    // smooth programmatic scroll — native smooth is disabled under Lenis.
+    window.__lenis = lenis;
+
     return () => {
       lenis.off("scroll", ScrollTrigger.update);
       lenis.destroy();
       gsap.ticker.remove(tick);
       gsap.ticker.lagSmoothing(500, 33); // restore GSAP default
+      delete window.__lenis;
     };
   }, []);
 

@@ -19,8 +19,8 @@ export default function EditorialSection() {
   return (
     <section
       ref={rootRef}
-      id="about"
-      aria-label="About"
+      id="ai-frontend"
+      aria-label="AI-assisted frontend"
       className="relative w-full bg-background px-6 py-[clamp(6rem,16vh,11rem)] sm:px-10 lg:px-16 xl:px-24"
     >
       {/* No-JS fallback: show the copy if scripts don't run. */}
