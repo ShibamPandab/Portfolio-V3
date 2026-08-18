@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio V3 — Creative Lab
 
-## Getting Started
+> Not a traditional portfolio — a premium, Awwwards-inspired creative lab focused on cinematic motion, storytelling, and interactive frontend experiences.
 
-First, run the development server:
+A motion-first personal site built with **Next.js 16** and **GSAP**, designed to feel minimal, luxurious, and immersive. Every section is an experience: clip-path and mask reveals, scroll-driven timelines, parallax, magnetic interactions, and smooth scrolling over a deep black canvas.
+
+**🔗 Live site: [portfolio-v3-zeta-three.vercel.app](https://portfolio-v3-zeta-three.vercel.app/)**
+
+<p>
+  <a href="https://portfolio-v3-zeta-three.vercel.app/"><img alt="Live Demo" src="https://img.shields.io/badge/Live_Demo-000000?logo=vercel&logoColor=white"></a>
+  <img alt="Next.js" src="https://img.shields.io/badge/Next.js_16-000000?logo=next.js&logoColor=white">
+  <img alt="React" src="https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white">
+  <img alt="GSAP" src="https://img.shields.io/badge/GSAP-88CE02?logo=greensock&logoColor=black">
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_v4-06B6D4?logo=tailwindcss&logoColor=white">
+</p>
+
+---
+
+## ✨ Highlights
+
+- **Motion-first** — GSAP + ScrollTrigger timelines drive every reveal; **Lenis** provides buttery smooth scrolling.
+- **Cinematic hero** — layered video, character portrait, film grain, and vignette with a scripted intro timeline.
+- **No-flash reveals** — content is hidden in CSS (`data-intro`, `.reveal-item`) so GSAP owns the reveal, with `<noscript>` fallbacks for every section.
+- **Editorial layouts** — large typography, generous whitespace, and premium spacing throughout.
+- **Reusable animation system** — a library of custom hooks (`useRevealOnScroll`, `useHeroIntro`, `useStoryTimeline`, `useParallax`, `useMagnetic`, `useWordReveal`, `useTilt`…).
+- **Custom UI primitives** — magnetic buttons, copy chips, segmented controls, and toggles.
+
+## 🧩 Sections
+
+Hero · Creative Web Experiences · AI-Assisted Frontend (Editorial) · Infinite Marquee · Journey Timeline · Featured Projects · Process · Motion Lab · Tech Stack · UI Library · About · Contact · Footer
+
+## 🧱 Tech stack
+
+| Layer | Tools |
+| --- | --- |
+| Framework | **Next.js 16** (App Router), **React 19** |
+| Language | **TypeScript** |
+| Styling | **Tailwind CSS v4** |
+| Motion | **GSAP** + ScrollTrigger · **Motion** (Framer Motion) · **Lenis** smooth scroll |
+| Type | Geist (sans) · JetBrains Mono (mono labels) |
+
+## 🚀 Getting started
+
+### Prerequisites
+
+- Node.js 18.18+ (Node 20+ recommended)
+
+### Install & run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open <http://localhost:3000>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | Run ESLint |
 
-## Learn More
+## 🗂 Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/
+│   ├── layout.tsx          # Root layout + fonts
+│   ├── page.tsx            # Section composition
+│   └── globals.css         # Tailwind + pre-JS reveal styles
+├── components/
+│   ├── hero/               # Hero: video, character, grain, vignette, editorial name
+│   ├── sections/           # Creative, Editorial, Marquee, Timeline, Projects,
+│   │                       #   Process, MotionLab, TechStack, UILibrary, About,
+│   │                       #   Contact, Footer (+ per-section *.data.ts)
+│   ├── ui/                 # MagneticButton, CopyChip, SegmentedControl, ToggleSwitch
+│   └── SmoothScroll.tsx    # Lenis wrapper
+├── hooks/                  # Reusable GSAP/motion hooks
+└── lib/                    # heroTimeline + helpers
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Design principles
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Black background · large typography · lots of whitespace · motion first · editorial layouts · micro-interactions. Animations favor opacity, translate, scale, clip-path/mask reveals, parallax, and timelines — never bounce, cheap easing, or flashy spinning. Every animation should feel expensive; never over-animate.
 
-## Deploy on Vercel
+See [`PROJECT_VISION.md`](PROJECT_VISION.md) for the full creative direction, section roadmap, and motion rules.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🌐 Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deployed on **Vercel** → [portfolio-v3-zeta-three.vercel.app](https://portfolio-v3-zeta-three.vercel.app/). Import the repo into Vercel — no extra build configuration is required.
+
+## 📄 License
+
+This project is a personal portfolio. Code is shared for reference; please don't republish the content or design as your own.
